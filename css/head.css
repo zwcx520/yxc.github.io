@@ -6,7 +6,6 @@ body{background-color: #1b1b1b}
 	top:0;
 	left:0;
 	z-index:999;
-	height:50px;
 	padding: 0 30px;
 	/*background: rgba(28, 35, 39, 0.8);*/
 }
@@ -110,9 +109,7 @@ body{background-color: #1b1b1b}
 	background: orange;
 }
 /*白色背景的头部*/
-.header.on{
-	background: #fff;
-	border-bottom: 1px solid #ccc;
+
 }
 .header.on .left .img1{
 	display: none;
