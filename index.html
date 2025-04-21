@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>归档-时光卷轴</title>  
+    <title>~颖~相册</title>  
      <link rel="stylesheet" href="https://lcy20.netlify.app/lianxierweima.css">
    <link rel="stylesheet" href="denglu.css">
     <style>
@@ -28,7 +28,7 @@
 
 <body>
     <div class="form-container" id="loginForm">
-        <h2>归档-登录<hr/><div style="font-size:10px;"><span id="runtime_span"></span></div></h2>
+        <h2>颖的相册<hr/><div style="font-size:10px;"><span id="runtime_span"></span></div></h2>
         <label for="loginUsername">账号:</label>
         <input type="text" id="loginUsername" placeholder="请输入用户名" />
         <label for="loginPassword">密码:</label>
@@ -67,7 +67,7 @@
 
 <script> 
 function show_runtime() { window.setTimeout("show_runtime()", 1000); X = new Date("2024/06/25 00:00"); Y = new Date(); T = (Y.getTime() - X.getTime()); M = 24 * 60 * 60 * 1000; a = T / M; A = Math.floor(a); b = (a - A) * 24; B = Math.floor(b); c = (b - B) * 60; C = Math.floor((b - B) * 60); D = Math.floor((c - C) * 60); runtime_span.innerHTML = "归档运行: " + A + "天" + B + "小时" + C + "分" + D + "秒" } show_runtime();
-function generateQuotes() { const apiUrl = 'https://v1.hitokoto.cn/';
+function generateQuotes() { const apiUrl = '';
 return fetch(apiUrl) .then(response => response.json()) .then(data => { const quote = data.hitokoto; return quote; }) }
 async function createCard() { const cardContainer = document.getElementById('cardContainer'); cardContainer.innerHTML = '';
 for (let i = 0; i < 1; i++) { const quote = await generateQuotes(); const card = document.createElement('div'); card.classList.add('card'); card.textContent = quote;
