@@ -1,7 +1,7 @@
 // 初始用户名和密码
   const initialUser1 = {
-    username: "",
-    password: ""
+    username: "lcy",
+    password: "lcy"
   };
   
  
