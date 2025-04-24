@@ -4,139 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户登录注册</title>
+    <title>用户登录注册</title>  
+      <link rel="stylesheet" href="denglu.css">
     <style>
-        /* 添加禁止滚动样式*/
-        html,
-        body {
-            overflow: hidden;
-            height: 100%;
-        }
+    /*网络监测弹窗 自定义弹窗样式 */
+   .custom-alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: yellow;
+      color: red;
+      padding: 20px;
+      border: 1px solid #ccc;
+      z-index: 1000;
+      border-radius: 5%;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #f0f2f5;
-        }
-
-       .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            margin: 20px 0;
-            transform: translateY(-10px);
-        }
-
-       .tabs {
-            display: flex;
-            margin-bottom: 2rem;
-        }
-
-       .tab {
-            flex: 1;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-       .tab.active {
-            border-color: #2196F3;
-            font-weight: bold;
-            color: #2196F3;
-        }
-
-       .form-container {
-            position: relative;
-        }
-
-       .form {
-            display: none;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-       .form.active {
-            display: block;
-            opacity: 1;
-        }
-
-       .input-group {
-            margin-bottom: 1.2rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #666;
-        }
-
-        input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #2196F3;
-            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
-        }
-
-        button {
-            width: 100%;
-            padding: 1rem;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #1976D2;
-        }
-
-        /* 添加提示信息的样式 */
-       .message {
-            margin-top: 1rem;
-            padding: 0.5rem;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-       .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-       .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        @media (max-width: 480px) {
-           .container {
-                width: 90%;
-                margin: 1rem;
-            }
-        }
+    
+  </style>
+    <style>
+      
     </style>
 </head>
 
@@ -181,116 +69,37 @@
             </form>
         </div>
     </div>
-
+<script src="https://yyxc.netlify.app/denglu.js"></script>
     <script>
-        // 初始用户数组
-        let users = [
-            {
-                username: "廖聪颖",
-                password: "lcy"
-            },
-            {
-                username: "zwcx",
-                password: "zwcx"
-            }
-        ];
-
-        // 从本地存储中读取用户数据，如果没有则初始化为空数组
-        const localUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-        function switchForm(formType) {
-            // 切换选项卡样式
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelector(`.tab[onclick="switchForm('${formType}')"]`).classList.add('active');
-
-            // 切换表单显示
-            document.querySelectorAll('.form').forEach(form => {
-                form.classList.remove('active');
-            });
-            document.getElementById(`${formType}Form`).classList.add('active');
-
-            // 隐藏提示信息
-            document.getElementById('loginMessage').innerHTML = "";
-            document.getElementById('registerMessage').innerHTML = "";
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const account = document.getElementById('loginAccount').value;
-            const password = document.getElementById('loginPassword').value;
-
-            // 先检查初始用户数组
-            let user = users.find(u => u.username === account && u.password === password);
-            // 再检查本地存储中的用户数组
-            if (!user) {
-                user = localUsers.find(u => u.username === account && u.password === password);
-            }
-
-            const messageElement = document.getElementById('loginMessage');
-            if (user) {
-                messageElement.className = "message success";
-                messageElement.innerHTML = "登录成功，正在跳转...";
-                setTimeout(() => {
-                    window.location.href = "https://yyxc.netlify.app/yxc.html";！
-                }, 1500);
-            } else {
-                messageElement.className = "message error";
-                messageElement.innerHTML = "用户名/密码错误！";
-            }
-
-            return false;
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-
-            const messageElement = document.getElementById('registerMessage');
-            // 密码一致性验证
-            if (password!== confirmPassword) {
-                messageElement.className = "message error";
-                messageElement.innerHTML = "两次输入的密码不一致！";
-                return false;
-            }
-
-            // 检查初始用户数组中用户是否已存在
-            if (users.some(u => u.username === username)) {
-                messageElement.className = "message error";
-                messageElement.innerHTML = "用户名已被注册！";
-                return false;
-            }
-
-            // 检查本地存储用户数组中用户是否已存在
-            if (localUsers.some(u => u.username === username)) {
-                messageElement.className = "message error";
-                messageElement.innerHTML = "用户名已被注册！";
-                return false;
-            }
-
-            // 保存新用户到初始用户数组
-            const newUser = {
-                username: username,
-                password: password
-            };
-            users.push(newUser);
-
-            // 将新用户添加到本地存储的用户数组中，并更新本地存储
-            localUsers.push(newUser);
-            localStorage.setItem('users', JSON.stringify(localUsers));
-
-            messageElement.className = "message success";
-            messageElement.innerHTML = "注册成功！";
-            setTimeout(() => {
-                switchForm('login');
-            }, 1500);
-
-            return false;
-        }
+       
     </script>
+<script>
+  function showCustomAlert(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'custom-alert';
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+    setTimeout(() => {
+      document.body.removeChild(alertDiv);
+    }, 3000); // 3秒后自动关闭弹窗
+  }
+
+  // 页面加载时先检查网络状态
+  if (navigator.onLine === false) {
+    showCustomAlert('网络已断开，请检查您的网络连接（可能没有 Wi-Fi 或移动数据等网络连接）');
+  }
+
+  // 监听网络断开事件
+  window.addEventListener('offline', function () {
+    showCustomAlert('网络已断开，请检查您的网络连接（可能没有 Wi-Fi 或移动数据等网络连接）');
+  });
+
+  // 监听网络连接事件
+  window.addEventListener('online', function () {
+    showCustomAlert('网络已连接成功！');
+    location.reload(); // 添加这行代码，在网络连接成功时刷新页面
+  });
+</script>
 </body>
 
 </html>
