@@ -2,168 +2,295 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>登录注册页面</title>
-  <link rel="stylesheet" href="https://lcy20.netlify.app/lianxierweima.css">
-  <link rel="stylesheet" href="denglu.css">
-  <style>
-    /*网络监测弹窗 自定义弹窗样式 */
-   .custom-alert {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: yellow;
-      color: red;
-      padding: 20px;
-      border: 1px solid #ccc;
-      z-index: 1000;
-      border-radius: 5%;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录注册</title>
+    <style>
+        /* 添加禁止滚动样式*/
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+        }
 
-    
-  </style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+
+       .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin: 20px 0;
+            transform: translateY(-10px);
+        }
+
+       .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+
+       .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+       .tab.active {
+            border-color: #2196F3;
+            font-weight: bold;
+            color: #2196F3;
+        }
+
+       .form-container {
+            position: relative;
+        }
+
+       .form {
+            display: none;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+       .form.active {
+            display: block;
+            opacity: 1;
+        }
+
+       .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1976D2;
+        }
+
+        /* 添加提示信息的样式 */
+       .message {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+       .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+       .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 480px) {
+           .container {
+                width: 90%;
+                margin: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container" id="loginContainer">
-    <h2>~颖~的相册</h2>
-    <!-- 新增提示信息元素 -->
-    <div id="loginMessage" class="message"></div>
-    <form id="loginForm">
-      <label for="loginUsername">用户名:</label>
-      <input type="text" id="loginUsername" required placeholder="请输入用户名">
-      <label for="loginPassword">密码:</label>
-      <input type="password" id="loginPassword" required placeholder="请输入密码">
-      <button type="button" onclick="login()">登录</button>
-    </form>
-    <p>没有账号? <a href="#" onclick="showRegister()">注册</a></p>
-  </div>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchForm('login')">登录</div>
+            <div class="tab" onclick="switchForm('register')">注册</div>
+        </div>
 
-  <div class="container" id="registerContainer" style="display: none;">
-    <h2>注册</h2>
-    <!-- 新增提示信息元素 -->
-    <div id="registerMessage" class="message"></div>
-    <form id="registerForm">
-      <label for="registerUsername">用户名:</label>
-      <input type="text" id="registerUsername" required placeholder="请输入用户名">
-      <label for="registerPassword">密码:</label>
-      <input type="password" id="registerPassword" required placeholder="请输入密码">
-      <label for="confirmPassword">确认密码:</label>
-      <input type="password" id="confirmPassword" required placeholder="请再次输入密码">
-      <button type="button" onclick="register()">注册</button>
-    </form>
-    <p>已有账号? <a href="#" onclick="showLogin()">登录</a></p>
-  </div>
+        <div class="form-container">
+            <!-- 登录表单 -->
+            <form id="loginForm" class="form active" onsubmit="return handleLogin(event)">
+                <div id="loginMessage" class="message"></div>
+                <div class="input-group">
+                    <label>用户名</label>
+                    <input type="text" id="loginAccount" required placeholder="请输入用户名">
+                </div>
+                <div class="input-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" required placeholder="请输入密码">
+                </div>
+                <button type="submit">立即登录</button>
+            </form>
 
-  <div style="font-size: 70%; color:#000000; position: fixed;  bottom: 0; width: 100%; list-style-type: none; margin: 0;  padding: 0; overflow: hidden; z-index: 9999; background:linear-gradient(to left,rgb(198, 255, 221), rgb(251, 215, 134) ); text-align: center;">&nbsp;&nbsp;[2024·9] ©  ICP 未备案 <hr /></div>
-  </div>
-  <a href="https://lcy20.netlify.app/lianxierweima.jpg"> <img class="image" alt="联系二维码"
-      src="https://lcy20.netlify.app/lianxierweima.jpg" />
-  </a>
-  <audio autoplay="true" loop="loop" src="https://lcy20.netlify.app/yy.mp3"></audio>
+            <!-- 注册表单 -->
+            <form id="registerForm" class="form" onsubmit="return handleRegister(event)">
+                <div id="registerMessage" class="message"></div>
+                <div class="input-group">
+                    <label>用户名</label>
+                    <input type="text" id="regUsername" required pattern="[A-Za-z0-9]{4,20}" placeholder="请输入4到20位用户名">
+                </div>
+                <div class="input-group">
+                    <label>密码</label>
+                    <input type="password" id="regPassword" required minlength="6" placeholder="请输入至少6位的密码">
+                </div>
+                <div class="input-group">
+                    <label>确认密码</label>
+                    <input type="password" id="regConfirmPassword" required placeholder="请再次输入密码">
+                </div>
+                <button type="submit">立即注册</button>
+            </form>
+        </div>
+    </div>
 
-</body>
+    <script>
+        // 初始用户数组
+        let users = [
+            {
+                username: "廖聪颖",
+                password: "lcy"
+            },
+            {
+                username: "zwcx",
+                password: "zwcx"
+            }
+        ];
 
-<script src="https://yyxc.netlify.app/denglu.js"></script>
-<script src="denglu.js"></script>
+        // 从本地存储中读取用户数据，如果没有则初始化为空数组
+        const localUsers = JSON.parse(localStorage.getItem('users')) || [];
 
+        function switchForm(formType) {
+            // 切换选项卡样式
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.tab[onclick="switchForm('${formType}')"]`).classList.add('active');
 
-<script>
-  function show_runtime() {
-    window.setTimeout("show_runtime()", 1000);
-    X = new Date("2024/06/25 00:00");
-    Y = new Date();
-    T = (Y.getTime() - X.getTime());
-    M = 24 * 60 * 60 * 1000;
-    a = T / M;
-    A = Math.floor(a);
-    b = (a - A) * 24;
-    B = Math.floor(b);
-    c = (b - B) * 60;
-    C = Math.floor((b - B) * 60);
-    D = Math.floor((c - C) * 60);
-    runtime_span.innerHTML = "归档运行: " + A + "天" + B + "小时" + C + "分" + D + "秒"
-  }
-  show_runtime();
+            // 切换表单显示
+            document.querySelectorAll('.form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(`${formType}Form`).classList.add('active');
 
-  function generateQuotes() {
-    const apiUrl = '';
-    return fetch(apiUrl)
-     .then(response => response.json())
-     .then(data => {
-        const quote = data.hitokoto;
-        return quote;
-      })
-  }
+            // 隐藏提示信息
+            document.getElementById('loginMessage').innerHTML = "";
+            document.getElementById('registerMessage').innerHTML = "";
+        }
 
-  async function createCard() {
-    const cardContainer = document.getElementById('cardContainer');
-    cardContainer.innerHTML = '';
+        function handleLogin(e) {
+            e.preventDefault();
+            const account = document.getElementById('loginAccount').value;
+            const password = document.getElementById('loginPassword').value;
 
-    for (let i = 0; i < 1; i++) {
-      const quote = await generateQuotes();
-      const card = document.createElement('div');
-      card.classList.add('card');
-      card.textContent = quote;
+            // 先检查初始用户数组
+            let user = users.find(u => u.username === account && u.password === password);
+            // 再检查本地存储中的用户数组
+            if (!user) {
+                user = localUsers.find(u => u.username === account && u.password === password);
+            }
 
-      const copyButton = document.createElement('button');
-      copyButton.classList.add('copy-button')
+            const messageElement = document.getElementById('loginMessage');
+            if (user) {
+                messageElement.className = "message success";
+                messageElement.innerHTML = "登录成功，正在跳转...";
+                setTimeout(() => {
+                    window.location.href = "https://yyxc.netlify.app";
+                }, 1500);
+            } else {
+                messageElement.className = "message error";
+                messageElement.innerHTML = "用户名/密码错误！";
+            }
 
-      copyButton.addEventListener('click', () => {
-        copyToClipboard(quote, card);
-      });
+            return false;
+        }
 
-      cardContainer.appendChild(card);
-    }
-  }
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-  function restart() {
-    createCard();
-  }
-  createCard();
+            const messageElement = document.getElementById('registerMessage');
+            // 密码一致性验证
+            if (password!== confirmPassword) {
+                messageElement.className = "message error";
+                messageElement.innerHTML = "两次输入的密码不一致！";
+                return false;
+            }
 
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('open');
-    const overlay = document.getElementById('overlay');
-    overlay.classList.toggle('show');
-  }
-</script>
+            // 检查初始用户数组中用户是否已存在
+            if (users.some(u => u.username === username)) {
+                messageElement.className = "message error";
+                messageElement.innerHTML = "用户名已被注册！";
+                return false;
+            }
 
-<script>
-  function showCustomAlert(message) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = 'custom-alert';
-    alertDiv.textContent = message;
-    document.body.appendChild(alertDiv);
-    setTimeout(() => {
-      document.body.removeChild(alertDiv);
-    }, 3000); // 3秒后自动关闭弹窗
-  }
+            // 检查本地存储用户数组中用户是否已存在
+            if (localUsers.some(u => u.username === username)) {
+                messageElement.className = "message error";
+                messageElement.innerHTML = "用户名已被注册！";
+                return false;
+            }
 
-  // 页面加载时先检查网络状态
-  if (navigator.onLine === false) {
-    showCustomAlert('网络已断开，请检查您的网络连接（可能没有 Wi-Fi 或移动数据等网络连接）');
-  }
+            // 保存新用户到初始用户数组
+            const newUser = {
+                username: username,
+                password: password
+            };
+            users.push(newUser);
 
-  // 监听网络断开事件
-  window.addEventListener('offline', function () {
-    showCustomAlert('网络已断开，请检查您的网络连接（可能没有 Wi-Fi 或移动数据等网络连接）');
-  });
+            // 将新用户添加到本地存储的用户数组中，并更新本地存储
+            localUsers.push(newUser);
+            localStorage.setItem('users', JSON.stringify(localUsers));
 
-  // 监听网络连接事件
-  window.addEventListener('online', function () {
-    showCustomAlert('网络已连接成功！');
-    location.reload(); // 添加这行代码，在网络连接成功时刷新页面
-  });
-</script>
+            messageElement.className = "message success";
+            messageElement.innerHTML = "注册成功！";
+            setTimeout(() => {
+                switchForm('login');
+            }, 1500);
 
-<script>
-  
-</script>
-
+            return false;
+        }
+    </script>
 </body>
 
 </html>
