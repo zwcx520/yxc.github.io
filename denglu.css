@@ -1,4 +1,4 @@
-  /* 添加禁止滚动样式*/
+   /* 添加禁止滚动样式*/
         html,
         body {
             overflow: hidden;
@@ -128,4 +128,4 @@
                 width: 90%;
                 margin: 1rem;
             }
-        }
+        
