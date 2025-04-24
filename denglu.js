@@ -48,7 +48,7 @@
                 messageElement.className = "message success";
                 messageElement.innerHTML = "登录成功，正在跳转...";
                 setTimeout(() => {
-                    window.location.href = "https://www.baidu.com";
+                    window.location.href = "https://yyxc.netlify.app/yxc.html";
                 }, 1500);
             } else {
                 messageElement.className = "message error";
