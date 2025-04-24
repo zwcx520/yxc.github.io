@@ -1,14 +1,11 @@
 // 初始用户名和密码
   const initialUser1 = {
-    username: "lcy",
-    password: "lcy"
+    username: "",
+    password: ""
   };
-  const initialUser2 = {
-    username: "zwcx",
-    password: "zwcx"
-  };
+  
  
-  const users = [initialUser1, initialUser2];
+  const users = [initialUser1];
 
   function showLogin() {
     document.getElementById('loginContainer').style.display = 'block';
