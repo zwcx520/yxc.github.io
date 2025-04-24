@@ -1,4 +1,4 @@
- // 初始用户数组
+  // 初始用户数组
         let users = [
             {
                 username: "廖聪颖",
@@ -48,7 +48,7 @@
                 messageElement.className = "message success";
                 messageElement.innerHTML = "登录成功，正在跳转...";
                 setTimeout(() => {
-                    window.location.href = "https://yyxc.netlify.app/yxc.html";！
+                    window.location.href = "https://www.baidu.com";
                 }, 1500);
             } else {
                 messageElement.className = "message error";
